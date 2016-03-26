@@ -1,0 +1,17 @@
+{
+  "name": "presentations",
+  "version": "1.0.0",
+  "description": "collection of presentations",
+  "scripts": {
+    "watch": "cleaver watch",
+    "build": "cleaver"
+  },
+  "author": "joel.sannerstedt@gmail.com",
+  "license": "ISC",
+  "dependencies": {
+    "cleaver": "^0.8.2"
+  },
+  "devDependencies": {
+    "cleaver": "^0.8.2"
+  }
+}
