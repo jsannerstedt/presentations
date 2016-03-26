@@ -1,0 +1,20 @@
+pre {
+    background: white;
+    padding: 8px;
+}
+
+h2 {
+    font-size: 200%;
+}
+
+h1 + h2 {
+    font-size: 100%;
+}
+
+.progress {
+    z-index: 1000;
+}
+
+.progress-bar {
+    height: 5px;
+}

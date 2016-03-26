@@ -355,8 +355,28 @@ github.com style (c) Vasily Polovnyov <vast@whiteants.net>
   font-weight: bold;
 }
 
+pre {
+    background: white;
+    padding: 8px;
+}
 
+h2 {
+    font-size: 200%;
+}
+
+h1 + h2 {
+    font-size: 100%;
+}
+
+.progress {
+    z-index: 1000;
+}
+
+.progress-bar {
+    height: 5px;
+}
   </style>
+    <script async src="http://localhost:35729/livereload.js"></script>
 </head>
 <body>
     <div class="progress">
@@ -364,7 +384,7 @@ github.com style (c) Vasily Polovnyov <vast@whiteants.net>
   </div>
 
   <div class="slide" id="slide-1">
-    <section class="slide-content"><h1 id="le-tribe">Le tribe</h1>
+    <section class="slide-content"><h1 id="fe-arch-tribe">FE arch tribe</h1>
 <h2 id="2016-04-06">2016-04-06</h2>
 </section>
   </div>
@@ -373,26 +393,31 @@ github.com style (c) Vasily Polovnyov <vast@whiteants.net>
 </section>
   </div>
   <div class="slide hidden" id="slide-3">
-    <section class="slide-content"><h3 id="demo">Demo</h3>
+    <section class="slide-content"><h2 id="demo">Demo</h2>
 </section>
   </div>
   <div class="slide hidden" id="slide-4">
     <section class="slide-content"><h3 id="overview">Overview</h3>
+<ul>
+<li>riot</li>
+<li>dedux</li>
+</ul>
 </section>
   </div>
   <div class="slide hidden" id="slide-5">
-    <section class="slide-content"><h3 id="store">Store</h3>
+    <section class="slide-content"><h3 id="updating-the-app">Updating the app</h3>
 <ul>
-<li>One store to rule them all.</li>
-<li>Emits event when state is updated.</li>
+<li>Riot stuff…</li>
+<li>(riot routing) all views are stateless, except the router.</li>
 </ul>
 </section>
   </div>
   <div class="slide hidden" id="slide-6">
-    <section class="slide-content"><h3 id="updating-the-app">Updating the app</h3>
+    <section class="slide-content"><h3 id="store">Store</h3>
 <ul>
-<li>Riot stuff…</li>
-<li>(riot routing) all views are stateless, except the router. It needs to keep track of previous view, to unmount it.</li>
+<li>One store to rule them all.</li>
+<li>Emits event when state is updated.
+It needs to keep track of previous view, to unmount it.</li>
 </ul>
 </section>
   </div>
@@ -401,9 +426,32 @@ github.com style (c) Vasily Polovnyov <vast@whiteants.net>
 <ul>
 <li>Functions to which you can subscribe. Emits events when they are run</li>
 </ul>
+<pre><code class="lang-javascript"><span class="hljs-keyword">import</span> { createActions } <span class="hljs-keyword">from</span> <span class="hljs-string">'dedux'</span>;
+
+<span class="hljs-keyword">const</span> actions = createActions([<span class="hljs-string">'firstAction'</span>, <span class="hljs-string">'secondAction'</span>]);
+actions.firstAction.subscribe(payload =&gt; {
+  <span class="hljs-built_in">console</span>.log(payload);
+});
+actions.firstAction(<span class="hljs-string">'hello'</span>); <span class="hljs-comment">// will log hello</span></code></pre>
 </section>
   </div>
   <div class="slide hidden" id="slide-8">
+    <section class="slide-content"><h3 id="actions-continued">Actions - continued</h3>
+<pre><code class="lang-javascript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">action</span>(<span class="hljs-params"></span>) </span>{
+  <span class="hljs-keyword">const</span> listeners = [];
+  <span class="hljs-keyword">const</span> trigger = data =&gt;
+    listeners.forEach(listener =&gt; listener(data));
+
+  trigger.subscribe = callback =&gt; {
+    listeners.push(callback);
+    <span class="hljs-keyword">return</span> () =&gt; listeners.splice(listeners.indexOf(callback), <span class="hljs-number">1</span>);
+  };
+
+  <span class="hljs-keyword">return</span> trigger;
+}</code></pre>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-9">
     <section class="slide-content"><h3 id="modifiers">Modifiers</h3>
 <ul>
 <li>Pure functions, returning an object.</li>
@@ -413,7 +461,7 @@ github.com style (c) Vasily Polovnyov <vast@whiteants.net>
 </ul>
 </section>
   </div>
-  <div class="slide hidden" id="slide-9">
+  <div class="slide hidden" id="slide-10">
     <section class="slide-content"><h3 id="reactions">Reactions</h3>
 <ul>
 <li>When you need a side effect, an async call, or just to chain actions, just subscribe to the action and do whatever you please.</li>
@@ -421,31 +469,84 @@ github.com style (c) Vasily Polovnyov <vast@whiteants.net>
 </ul>
 </section>
   </div>
-  <div class="slide hidden" id="slide-10">
-    <section class="slide-content"><h3 id="examples">Examples</h3>
+  <div class="slide hidden" id="slide-11">
+    <section class="slide-content"><h3 id="recap">Recap</h3>
 <ul>
-<li>Basic rest operations</li>
+<li>View gets all data from state</li>
+<li>View trigger actions</li>
+<li>Actions modifies state, and triggers reactions</li>
+<li>Reactions can trigger other actions</li>
+<li>State gets updated by running corresponding modifiers</li>
+<li>A state change is emitted by the store</li>
+<li>View gets updated</li>
+</ul>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-12">
+    <section class="slide-content"><h2 id="examples">Examples</h2>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-13">
+    <section class="slide-content"><h3 id="some-helpers">Some helpers</h3>
+<ul>
+<li>If we create actions from modifier and reaction keys</li>
+<li>And we auto-subscribe to actions by reaction key</li>
+<li>We can do something like this...</li>
+</ul>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-14">
+    <section class="slide-content"><h3 id="basic-rest-operations">Basic rest operations</h3>
+<pre><code class="lang-javascript">
+<span class="hljs-comment">// modifiers/foo.js</span>
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> {
+    getFoo: () =&gt; ({ loading: <span class="hljs-literal">true</span> }),
+    getFooSuccess: item =&gt; ({ item, loading: <span class="hljs-literal">false</span> }),
+    getFooError: error ({ error, loading: <span class="hljs-literal">false</span> })
+};
+
+<span class="hljs-comment">// reactions/foo.js</span>
+<span class="hljs-keyword">import</span> actions <span class="hljs-keyword">from</span> <span class="hljs-string">'./actions'</span>;
+<span class="hljs-keyword">import</span> api <span class="hljs-keyword">from</span> <span class="hljs-string">'./api'</span>;
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> {
+    getFoo: id =&gt; api.get(id)
+    .then(actions.getFooSuccess)
+    .catch(actions.getFooError)
+};
+
+<span class="hljs-comment">// index.js</span>
+<span class="hljs-comment">// ...</span>
+store.subscribe(state =&gt; {
+   <span class="hljs-built_in">console</span>.log(state);
+});
+actions.getFoo(<span class="hljs-number">123</span>);
+<span class="hljs-comment">// will eventually log { foo: { item: /* whatever our api returns */ }}</span></code></pre>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-15">
+    <section class="slide-content"><h3 id="other-examples">other examples</h3>
+<ul>
 <li>Filtering</li>
 <li>Toggling</li>
 <li>Debouncing updates</li>
 </ul>
 </section>
   </div>
-  <div class="slide hidden" id="slide-11">
+  <div class="slide hidden" id="slide-16">
     <section class="slide-content"><h3 id="routing">Routing</h3>
 <ul>
 <li>Routing is a group of actions.</li>
 </ul>
 </section>
   </div>
-  <div class="slide hidden" id="slide-12">
+  <div class="slide hidden" id="slide-17">
     <section class="slide-content"><h3 id="css">Css</h3>
 <ul>
 <li>Keep css with the tag. Then export and concat…</li>
 </ul>
 </section>
   </div>
-  <div class="slide hidden" id="slide-13">
+  <div class="slide hidden" id="slide-18">
     <section class="slide-content"><h3 id="questions">Questions</h3>
 <ul>
 <li>Returning a new array in a modifier, will re-evaluate each-binding. How to avoid reinit of underlying control?</li>
@@ -453,7 +554,7 @@ github.com style (c) Vasily Polovnyov <vast@whiteants.net>
 </ul>
 </section>
   </div>
-  <div class="slide hidden author-slide" id="slide-14">
+  <div class="slide hidden author-slide" id="slide-19">
     <section class="slide-content"><div class="author">
   <h1 class="name">Joel Sannerstedt</h1>
     <h3 class="url">
