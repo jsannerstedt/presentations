@@ -390,6 +390,14 @@ h1 + h2 {
   </div>
   <div class="slide hidden" id="slide-2">
     <section class="slide-content"><h3 id="background">Background</h3>
+<ul>
+<li>Guide for finding products</li>
+<li>Global market</li>
+<li>Possibly online store</li>
+<li>Possibly server rendered (for seo and speed)</li>
+<li>Hosting unknown, iis as of today but hopefully cloud later</li>
+<li>ie11 and above. Mobile first</li>
+</ul>
 </section>
   </div>
   <div class="slide hidden" id="slide-3">
@@ -397,14 +405,47 @@ h1 + h2 {
 </section>
   </div>
   <div class="slide hidden" id="slide-4">
-    <section class="slide-content"><h3 id="overview">Overview</h3>
+    <section class="slide-content"><h3 id="the-view">The view</h3>
 <ul>
-<li>riot</li>
-<li>dedux</li>
+<li>Decoupling the view</li>
+<li>Life expectancy of code has gone down (remember Klever on leetspeak?)</li>
+<li>My conclusion rather than fighting this and spending more time on your code, is to embrace it. Make it easier to swap out code by making sure it&#39;s replaceable</li>
+<li>If I can re-write my app to use another view engine in less than a day, then it really doesn&#39;t matter all that much which one I choose today</li>
 </ul>
 </section>
   </div>
   <div class="slide hidden" id="slide-5">
+    <section class="slide-content"><h3 id="dependencies">Dependencies</h3>
+<ul>
+<li>riot</li>
+<li>dedux</li>
+<li>ie11 polyfills</li>
+</ul>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-6">
+    <section class="slide-content"><h3 id="riot-tag-example">Riot tag example</h3>
+<pre><code class="lang-html"><span class="hljs-tag">&lt;<span class="hljs-name">todos</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">ul</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">todo-item</span> <span class="hljs-attr">each</span>=<span class="hljs-string">"{ todos }"</span> /&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">ul</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="actionscript">
+        <span class="hljs-keyword">this</span>.todos = [{name: <span class="hljs-string">'doit'</span>}, {name: <span class="hljs-string">'profit'</span>}];
+    </span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">todos</span>&gt;</span>
+
+<span class="hljs-tag">&lt;<span class="hljs-name">todo-item</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span>{ name }<span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+
+    <span class="hljs-tag">&lt;<span class="hljs-name">style</span> <span class="hljs-attr">scoped</span>&gt;</span><span class="css">
+    <span class="hljs-selector-tag">li</span> {
+        <span class="hljs-attribute">color</span>: green;
+    }
+    </span><span class="hljs-tag">&lt;/<span class="hljs-name">style</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">todo-item</span>&gt;</span></code></pre>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-7">
     <section class="slide-content"><h3 id="updating-the-app">Updating the app</h3>
 <ul>
 <li>Riot stuff…</li>
@@ -412,7 +453,7 @@ h1 + h2 {
 </ul>
 </section>
   </div>
-  <div class="slide hidden" id="slide-6">
+  <div class="slide hidden" id="slide-8">
     <section class="slide-content"><h3 id="store">Store</h3>
 <ul>
 <li>One store to rule them all.</li>
@@ -421,7 +462,7 @@ It needs to keep track of previous view, to unmount it.</li>
 </ul>
 </section>
   </div>
-  <div class="slide hidden" id="slide-7">
+  <div class="slide hidden" id="slide-9">
     <section class="slide-content"><h3 id="actions">Actions</h3>
 <ul>
 <li>Functions to which you can subscribe. Emits events when they are run</li>
@@ -435,7 +476,7 @@ actions.firstAction.subscribe(payload =&gt; {
 actions.firstAction(<span class="hljs-string">'hello'</span>); <span class="hljs-comment">// will log hello</span></code></pre>
 </section>
   </div>
-  <div class="slide hidden" id="slide-8">
+  <div class="slide hidden" id="slide-10">
     <section class="slide-content"><h3 id="actions-continued">Actions - continued</h3>
 <pre><code class="lang-javascript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">action</span>(<span class="hljs-params"></span>) </span>{
   <span class="hljs-keyword">const</span> listeners = [];
@@ -451,7 +492,7 @@ actions.firstAction(<span class="hljs-string">'hello'</span>); <span class="hljs
 }</code></pre>
 </section>
   </div>
-  <div class="slide hidden" id="slide-9">
+  <div class="slide hidden" id="slide-11">
     <section class="slide-content"><h3 id="modifiers">Modifiers</h3>
 <ul>
 <li>Pure functions, returning an object.</li>
@@ -461,7 +502,7 @@ actions.firstAction(<span class="hljs-string">'hello'</span>); <span class="hljs
 </ul>
 </section>
   </div>
-  <div class="slide hidden" id="slide-10">
+  <div class="slide hidden" id="slide-12">
     <section class="slide-content"><h3 id="reactions">Reactions</h3>
 <ul>
 <li>When you need a side effect, an async call, or just to chain actions, just subscribe to the action and do whatever you please.</li>
@@ -469,7 +510,7 @@ actions.firstAction(<span class="hljs-string">'hello'</span>); <span class="hljs
 </ul>
 </section>
   </div>
-  <div class="slide hidden" id="slide-11">
+  <div class="slide hidden" id="slide-13">
     <section class="slide-content"><h3 id="recap">Recap</h3>
 <ul>
 <li>View gets all data from state</li>
@@ -482,11 +523,11 @@ actions.firstAction(<span class="hljs-string">'hello'</span>); <span class="hljs
 </ul>
 </section>
   </div>
-  <div class="slide hidden" id="slide-12">
+  <div class="slide hidden" id="slide-14">
     <section class="slide-content"><h2 id="examples">Examples</h2>
 </section>
   </div>
-  <div class="slide hidden" id="slide-13">
+  <div class="slide hidden" id="slide-15">
     <section class="slide-content"><h3 id="some-helpers">Some helpers</h3>
 <ul>
 <li>If we create actions from modifier and reaction keys</li>
@@ -495,7 +536,7 @@ actions.firstAction(<span class="hljs-string">'hello'</span>); <span class="hljs
 </ul>
 </section>
   </div>
-  <div class="slide hidden" id="slide-14">
+  <div class="slide hidden" id="slide-16">
     <section class="slide-content"><h3 id="basic-rest-operations">Basic rest operations</h3>
 <pre><code class="lang-javascript">
 <span class="hljs-comment">// modifiers/foo.js</span>
@@ -523,7 +564,7 @@ actions.getFoo(<span class="hljs-number">123</span>);
 <span class="hljs-comment">// will eventually log { foo: { item: /* whatever our api returns */ }}</span></code></pre>
 </section>
   </div>
-  <div class="slide hidden" id="slide-15">
+  <div class="slide hidden" id="slide-17">
     <section class="slide-content"><h3 id="other-examples">other examples</h3>
 <ul>
 <li>Filtering</li>
@@ -532,29 +573,29 @@ actions.getFoo(<span class="hljs-number">123</span>);
 </ul>
 </section>
   </div>
-  <div class="slide hidden" id="slide-16">
+  <div class="slide hidden" id="slide-18">
     <section class="slide-content"><h3 id="routing">Routing</h3>
 <ul>
 <li>Routing is a group of actions.</li>
 </ul>
 </section>
   </div>
-  <div class="slide hidden" id="slide-17">
+  <div class="slide hidden" id="slide-19">
     <section class="slide-content"><h3 id="css">Css</h3>
 <ul>
 <li>Keep css with the tag. Then export and concat…</li>
 </ul>
 </section>
   </div>
-  <div class="slide hidden" id="slide-18">
+  <div class="slide hidden" id="slide-20">
     <section class="slide-content"><h3 id="questions">Questions</h3>
 <ul>
-<li>Returning a new array in a modifier, will re-evaluate each-binding. How to avoid reinit of underlying control?</li>
+<li>Returning a new array in a modifier, will re-evaluate each-binding. How to avoid re-init of underlying control?</li>
 <li>Readability?</li>
 </ul>
 </section>
   </div>
-  <div class="slide hidden author-slide" id="slide-19">
+  <div class="slide hidden author-slide" id="slide-21">
     <section class="slide-content"><div class="author">
   <h1 class="name">Joel Sannerstedt</h1>
     <h3 class="url">

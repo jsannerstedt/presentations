@@ -14,17 +14,55 @@ style: ../main.css
 --
 
 ### Background
+* Guide for finding products
+* Global market
+* Possibly online store
+* Possibly server rendered (for seo and speed)
+* Hosting unknown, iis as of today but hopefully cloud later
+* ie11 and above. Mobile first
 
 --
 
 ## Demo
 
+--
+
+### The view
+* Decoupling the view
+* Life expectancy of code has gone down (remember Klever on leetspeak?)
+* My conclusion rather than fighting this and spending more time on your code, is to embrace it. Make it easier to swap out code by making sure it's replaceable
+* If I can re-write my app to use another view engine in less than a day, then it really doesn't matter all that much which one I choose today
 
 --
 
-### Overview
+### Dependencies
 * riot
 * dedux
+* ie11 polyfills
+
+--
+
+### Riot tag example
+```html
+<todos>
+    <ul>
+        <todo-item each="{ todos }" />
+    </ul>
+    <script>
+        this.todos = [{name: 'doit'}, {name: 'profit'}];
+    </script>
+</todos>
+
+<todo-item>
+    <li>{ name }</li>
+
+    <style scoped>
+    li {
+        color: green;
+    }
+    </style>
+</todo-item>
+```
 
 --
 
@@ -161,5 +199,5 @@ actions.getFoo(123);
 --
 
 ### Questions
-* Returning a new array in a modifier, will re-evaluate each-binding. How to avoid reinit of underlying control?
+* Returning a new array in a modifier, will re-evaluate each-binding. How to avoid re-init of underlying control?
 * Readability?
