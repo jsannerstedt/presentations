@@ -35,6 +35,14 @@ style: ../main.css
 
 --
 
+### The idea
+* No (almost) logic in the view
+* One way data flow
+
+* Declarative syntax for logic
+...
+--
+
 ### Dependencies
 * riot
 * dedux
@@ -66,16 +74,84 @@ style: ../main.css
 
 --
 
+### Riot tag example
+```javascript
+// app.js
+import riot from 'riot';
+riot.mount('my-app', {stuff: [{ name: 'kalle kula' }, { name: 'apan ola'}] });
+```
+```html
+// index.html
+<my-app>
+    <ul>
+        <li each="{ opts.stuff }">{ name }</li>
+    </ul>
+</my-app>
+```
+
+--
+
 ### Updating the app
-* Riot stuff…
-* (riot routing) all views are stateless, except the router.
+```javascript
+// app.js
+import riot from 'riot';
+const app = riot.mount('my-app', { state })[0];
+app.update({ state });
+```
+--
+
+### App.tag
+
+* Basic layout of the app
+```html
+<product-selection>
+    <app-header/>
+
+    <router/>
+
+    <app-menu/>
+
+    <toasts/>
+    <style scoped>
+        /* all general styles here */
+    </style>
+</product-selection>
+```
+
+--
+### Views
+
+* All views are stateless, except the router. It needs to keep track of previous view, to unmount it.
+```html
+<router>
+  <div name="content"></div>
+
+  <script type="text/babel">
+    const mountSubView = () => {
+      let currentTag, currentView;
+      const viewName = opts.state.route.activeView;
+      if (currentView === viewName) update(currentTag, opts.state);
+      if (currentTag) dispose(currentTag);
+      if (viewName) {
+        // currentTag = mountTag(viewName);
+        // currentView = viewName;
+      }
+    };
+    this.on('update', () => mountSubView());
+    // ...
+  </script>
+</router>
+```
+
+--
+
+## Then what?
 
 --
 
 ### Store
 * One store to rule them all.
 * Emits event when state is updated.
-It needs to keep track of previous view, to unmount it.
 
 --
 
@@ -142,6 +218,33 @@ function action() {
 
 --
 
+### Basic sync use case
+
+```javascript
+import { combineModifiers, createActions, createStore } from 'dedux';
+
+const modifiers = combineModifiers({
+  menu: {
+    initialState: () => ({ menuOpen: false }),
+    toggleMenu: payload => ({ menuOpen: payload })
+  }
+});
+
+const actions = createActions(Object.keys(modifiers));
+
+const store = createStore(modifiers, actions);
+
+store.subscribe(state => {
+  // do something intersting here, like re-rendering a view
+  console.log(state);
+});
+
+actions.toggleMenu(true);
+// will log { menu: { menuOpen: true } }
+```
+
+--
+
 ### Some helpers
 * If we create actions from modifier and reaction keys
 * And we auto-subscribe to actions by reaction key
@@ -152,14 +255,14 @@ function action() {
 ### Basic rest operations
 
 ```javascript
-
 // modifiers/foo.js
 export default {
     getFoo: () => ({ loading: true }),
     getFooSuccess: item => ({ item, loading: false }),
     getFooError: error ({ error, loading: false })
 };
-
+```
+```javascript
 // reactions/foo.js
 import actions from './actions';
 import api from './api';
@@ -168,7 +271,8 @@ export default {
     .then(actions.getFooSuccess)
     .catch(actions.getFooError)
 };
-
+```
+```javascript
 // index.js
 // ...
 store.subscribe(state => {
@@ -180,7 +284,7 @@ actions.getFoo(123);
 
 --
 
-### other examples
+### some examples...
 
 * Filtering
 * Toggling

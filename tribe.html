@@ -376,7 +376,6 @@ h1 + h2 {
     height: 5px;
 }
   </style>
-    <script async src="http://localhost:35729/livereload.js"></script>
 </head>
 <body>
     <div class="progress">
@@ -415,6 +414,18 @@ h1 + h2 {
 </section>
   </div>
   <div class="slide hidden" id="slide-5">
+    <section class="slide-content"><h3 id="the-idea">The idea</h3>
+<ul>
+<li>No (almost) logic in the view</li>
+<li><p>One way data flow</p>
+</li>
+<li><p>Declarative syntax for logic
+...</p>
+</li>
+</ul>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-6">
     <section class="slide-content"><h3 id="dependencies">Dependencies</h3>
 <ul>
 <li>riot</li>
@@ -423,7 +434,7 @@ h1 + h2 {
 </ul>
 </section>
   </div>
-  <div class="slide hidden" id="slide-6">
+  <div class="slide hidden" id="slide-7">
     <section class="slide-content"><h3 id="riot-tag-example">Riot tag example</h3>
 <pre><code class="lang-html"><span class="hljs-tag">&lt;<span class="hljs-name">todos</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">ul</span>&gt;</span>
@@ -445,24 +456,86 @@ h1 + h2 {
 <span class="hljs-tag">&lt;/<span class="hljs-name">todo-item</span>&gt;</span></code></pre>
 </section>
   </div>
-  <div class="slide hidden" id="slide-7">
-    <section class="slide-content"><h3 id="updating-the-app">Updating the app</h3>
-<ul>
-<li>Riot stuff…</li>
-<li>(riot routing) all views are stateless, except the router.</li>
-</ul>
-</section>
-  </div>
   <div class="slide hidden" id="slide-8">
-    <section class="slide-content"><h3 id="store">Store</h3>
-<ul>
-<li>One store to rule them all.</li>
-<li>Emits event when state is updated.
-It needs to keep track of previous view, to unmount it.</li>
-</ul>
+    <section class="slide-content"><h3 id="riot-tag-example">Riot tag example</h3>
+<pre><code class="lang-javascript"><span class="hljs-comment">// app.js</span>
+<span class="hljs-keyword">import</span> riot <span class="hljs-keyword">from</span> <span class="hljs-string">'riot'</span>;
+riot.mount(<span class="hljs-string">'my-app'</span>, {stuff: [{ name: <span class="hljs-string">'kalle kula'</span> }, { name: <span class="hljs-string">'apan ola'</span>}] });</code></pre>
+<pre><code class="lang-html">// index.html
+<span class="hljs-tag">&lt;<span class="hljs-name">my-app</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">ul</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">li</span> <span class="hljs-attr">each</span>=<span class="hljs-string">"{ opts.stuff }"</span>&gt;</span>{ name }<span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">ul</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">my-app</span>&gt;</span></code></pre>
 </section>
   </div>
   <div class="slide hidden" id="slide-9">
+    <section class="slide-content"><h3 id="updating-the-app">Updating the app</h3>
+<pre><code class="lang-javascript"><span class="hljs-comment">// app.js</span>
+<span class="hljs-keyword">import</span> riot <span class="hljs-keyword">from</span> <span class="hljs-string">'riot'</span>;
+<span class="hljs-keyword">const</span> app = riot.mount(<span class="hljs-string">'my-app'</span>, { state })[<span class="hljs-number">0</span>];
+app.update({ state });</code></pre>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-10">
+    <section class="slide-content"><h3 id="app-tag">App.tag</h3>
+<ul>
+<li><p>Basic layout of the app</p>
+<pre><code class="lang-html"><span class="hljs-tag">&lt;<span class="hljs-name">product-selection</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">app-header</span>/&gt;</span>
+
+  <span class="hljs-tag">&lt;<span class="hljs-name">router</span>/&gt;</span>
+
+  <span class="hljs-tag">&lt;<span class="hljs-name">app-menu</span>/&gt;</span>
+
+  <span class="hljs-tag">&lt;<span class="hljs-name">toasts</span>/&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">style</span> <span class="hljs-attr">scoped</span>&gt;</span><span class="css">
+      <span class="hljs-comment">/* all general styles here */</span>
+  </span><span class="hljs-tag">&lt;/<span class="hljs-name">style</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">product-selection</span>&gt;</span></code></pre>
+</li>
+</ul>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-11">
+    <section class="slide-content"><h3 id="views">Views</h3>
+<ul>
+<li><p>All views are stateless, except the router. It needs to keep track of previous view, to unmount it.</p>
+<pre><code class="lang-html"><span class="hljs-tag">&lt;<span class="hljs-name">router</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"content"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+
+<span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"text/babel"</span>&gt;</span><span class="javascript">
+  <span class="hljs-keyword">const</span> mountSubView = () =&gt; {
+    <span class="hljs-keyword">let</span> currentTag, currentView;
+    <span class="hljs-keyword">const</span> viewName = opts.state.route.activeView;
+    <span class="hljs-keyword">if</span> (currentView === viewName) update(currentTag, opts.state);
+    <span class="hljs-keyword">if</span> (currentTag) dispose(currentTag);
+    <span class="hljs-keyword">if</span> (viewName) {
+      <span class="hljs-comment">// currentTag = mountTag(viewName);</span>
+      <span class="hljs-comment">// currentView = viewName;</span>
+    }
+  };
+  <span class="hljs-keyword">this</span>.on(<span class="hljs-string">'update'</span>, () =&gt; mountSubView());
+  <span class="hljs-comment">// ...</span>
+</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">router</span>&gt;</span></code></pre>
+</li>
+</ul>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-12">
+    <section class="slide-content"><h2 id="then-what-">Then what?</h2>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-13">
+    <section class="slide-content"><h3 id="store">Store</h3>
+<ul>
+<li>One store to rule them all.</li>
+<li>Emits event when state is updated.</li>
+</ul>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-14">
     <section class="slide-content"><h3 id="actions">Actions</h3>
 <ul>
 <li>Functions to which you can subscribe. Emits events when they are run</li>
@@ -476,7 +549,7 @@ actions.firstAction.subscribe(payload =&gt; {
 actions.firstAction(<span class="hljs-string">'hello'</span>); <span class="hljs-comment">// will log hello</span></code></pre>
 </section>
   </div>
-  <div class="slide hidden" id="slide-10">
+  <div class="slide hidden" id="slide-15">
     <section class="slide-content"><h3 id="actions-continued">Actions - continued</h3>
 <pre><code class="lang-javascript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">action</span>(<span class="hljs-params"></span>) </span>{
   <span class="hljs-keyword">const</span> listeners = [];
@@ -492,7 +565,7 @@ actions.firstAction(<span class="hljs-string">'hello'</span>); <span class="hljs
 }</code></pre>
 </section>
   </div>
-  <div class="slide hidden" id="slide-11">
+  <div class="slide hidden" id="slide-16">
     <section class="slide-content"><h3 id="modifiers">Modifiers</h3>
 <ul>
 <li>Pure functions, returning an object.</li>
@@ -502,7 +575,7 @@ actions.firstAction(<span class="hljs-string">'hello'</span>); <span class="hljs
 </ul>
 </section>
   </div>
-  <div class="slide hidden" id="slide-12">
+  <div class="slide hidden" id="slide-17">
     <section class="slide-content"><h3 id="reactions">Reactions</h3>
 <ul>
 <li>When you need a side effect, an async call, or just to chain actions, just subscribe to the action and do whatever you please.</li>
@@ -510,7 +583,7 @@ actions.firstAction(<span class="hljs-string">'hello'</span>); <span class="hljs
 </ul>
 </section>
   </div>
-  <div class="slide hidden" id="slide-13">
+  <div class="slide hidden" id="slide-18">
     <section class="slide-content"><h3 id="recap">Recap</h3>
 <ul>
 <li>View gets all data from state</li>
@@ -523,11 +596,35 @@ actions.firstAction(<span class="hljs-string">'hello'</span>); <span class="hljs
 </ul>
 </section>
   </div>
-  <div class="slide hidden" id="slide-14">
+  <div class="slide hidden" id="slide-19">
     <section class="slide-content"><h2 id="examples">Examples</h2>
 </section>
   </div>
-  <div class="slide hidden" id="slide-15">
+  <div class="slide hidden" id="slide-20">
+    <section class="slide-content"><h3 id="basic-sync-use-case">Basic sync use case</h3>
+<pre><code class="lang-javascript"><span class="hljs-keyword">import</span> { combineModifiers, createActions, createStore } <span class="hljs-keyword">from</span> <span class="hljs-string">'dedux'</span>;
+
+<span class="hljs-keyword">const</span> modifiers = combineModifiers({
+  menu: {
+    initialState: () =&gt; ({ menuOpen: <span class="hljs-literal">false</span> }),
+    toggleMenu: payload =&gt; ({ menuOpen: payload })
+  }
+});
+
+<span class="hljs-keyword">const</span> actions = createActions(<span class="hljs-built_in">Object</span>.keys(modifiers));
+
+<span class="hljs-keyword">const</span> store = createStore(modifiers, actions);
+
+store.subscribe(state =&gt; {
+  <span class="hljs-comment">// do something intersting here, like re-rendering a view</span>
+  <span class="hljs-built_in">console</span>.log(state);
+});
+
+actions.toggleMenu(<span class="hljs-literal">true</span>);
+<span class="hljs-comment">// will log { menu: { menuOpen: true } }</span></code></pre>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-21">
     <section class="slide-content"><h3 id="some-helpers">Some helpers</h3>
 <ul>
 <li>If we create actions from modifier and reaction keys</li>
@@ -536,26 +633,23 @@ actions.firstAction(<span class="hljs-string">'hello'</span>); <span class="hljs
 </ul>
 </section>
   </div>
-  <div class="slide hidden" id="slide-16">
+  <div class="slide hidden" id="slide-22">
     <section class="slide-content"><h3 id="basic-rest-operations">Basic rest operations</h3>
-<pre><code class="lang-javascript">
-<span class="hljs-comment">// modifiers/foo.js</span>
+<pre><code class="lang-javascript"><span class="hljs-comment">// modifiers/foo.js</span>
 <span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> {
     getFoo: () =&gt; ({ loading: <span class="hljs-literal">true</span> }),
     getFooSuccess: item =&gt; ({ item, loading: <span class="hljs-literal">false</span> }),
     getFooError: error ({ error, loading: <span class="hljs-literal">false</span> })
-};
-
-<span class="hljs-comment">// reactions/foo.js</span>
+};</code></pre>
+<pre><code class="lang-javascript"><span class="hljs-comment">// reactions/foo.js</span>
 <span class="hljs-keyword">import</span> actions <span class="hljs-keyword">from</span> <span class="hljs-string">'./actions'</span>;
 <span class="hljs-keyword">import</span> api <span class="hljs-keyword">from</span> <span class="hljs-string">'./api'</span>;
 <span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> {
     getFoo: id =&gt; api.get(id)
     .then(actions.getFooSuccess)
     .catch(actions.getFooError)
-};
-
-<span class="hljs-comment">// index.js</span>
+};</code></pre>
+<pre><code class="lang-javascript"><span class="hljs-comment">// index.js</span>
 <span class="hljs-comment">// ...</span>
 store.subscribe(state =&gt; {
    <span class="hljs-built_in">console</span>.log(state);
@@ -564,8 +658,8 @@ actions.getFoo(<span class="hljs-number">123</span>);
 <span class="hljs-comment">// will eventually log { foo: { item: /* whatever our api returns */ }}</span></code></pre>
 </section>
   </div>
-  <div class="slide hidden" id="slide-17">
-    <section class="slide-content"><h3 id="other-examples">other examples</h3>
+  <div class="slide hidden" id="slide-23">
+    <section class="slide-content"><h3 id="some-examples-">some examples...</h3>
 <ul>
 <li>Filtering</li>
 <li>Toggling</li>
@@ -573,21 +667,21 @@ actions.getFoo(<span class="hljs-number">123</span>);
 </ul>
 </section>
   </div>
-  <div class="slide hidden" id="slide-18">
+  <div class="slide hidden" id="slide-24">
     <section class="slide-content"><h3 id="routing">Routing</h3>
 <ul>
 <li>Routing is a group of actions.</li>
 </ul>
 </section>
   </div>
-  <div class="slide hidden" id="slide-19">
+  <div class="slide hidden" id="slide-25">
     <section class="slide-content"><h3 id="css">Css</h3>
 <ul>
 <li>Keep css with the tag. Then export and concat…</li>
 </ul>
 </section>
   </div>
-  <div class="slide hidden" id="slide-20">
+  <div class="slide hidden" id="slide-26">
     <section class="slide-content"><h3 id="questions">Questions</h3>
 <ul>
 <li>Returning a new array in a modifier, will re-evaluate each-binding. How to avoid re-init of underlying control?</li>
@@ -595,7 +689,7 @@ actions.getFoo(<span class="hljs-number">123</span>);
 </ul>
 </section>
   </div>
-  <div class="slide hidden author-slide" id="slide-21">
+  <div class="slide hidden author-slide" id="slide-27">
     <section class="slide-content"><div class="author">
   <h1 class="name">Joel Sannerstedt</h1>
     <h3 class="url">
