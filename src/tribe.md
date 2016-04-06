@@ -14,8 +14,8 @@ style: ../main.css
 --
 
 ### Background
-* Guide for finding products
-* Global market
+* Guide for finding products (prisjakt)
+* Global market - differentiate products by location and language
 * Possibly online store
 * Possibly server rendered (for seo and speed)
 * Hosting unknown, iis as of today but hopefully cloud later
@@ -28,7 +28,6 @@ style: ../main.css
 --
 
 ### The view
-* Decoupling the view
 * Life expectancy of code has gone down (remember Klever on leetspeak?)
 * My conclusion rather than fighting this and spending more time on your code, is to embrace it. Make it easier to swap out code by making sure it's replaceable
 * If I can re-write my app to use another view engine in less than a day, then it really doesn't matter all that much which one I choose today
@@ -36,11 +35,10 @@ style: ../main.css
 --
 
 ### The idea
+* Decoupling the view
 * No (almost) logic in the view
 * One way data flow
 
-* Declarative syntax for logic
-...
 --
 
 ### Dependencies
@@ -71,21 +69,25 @@ style: ../main.css
     </style>
 </todo-item>
 ```
+--
+
+### Css
+* Riot supports scoped css
+* Will be prefixed with tag name and injected
+* Can be exported to files on build
 
 --
 
-### Riot tag example
+### Riot tag example - continued
 ```javascript
 // app.js
 import riot from 'riot';
-riot.mount('my-app', {stuff: [{ name: 'kalle kula' }, { name: 'apan ola'}] });
+riot.mount('my-app', {todos: [{ name: 'doit' }, { name: 'profit'}] });
 ```
 ```html
 // index.html
 <my-app>
-    <ul>
-        <li each="{ opts.stuff }">{ name }</li>
-    </ul>
+    <todos items="{ opts.todos }" />
 </my-app>
 ```
 
@@ -95,38 +97,41 @@ riot.mount('my-app', {stuff: [{ name: 'kalle kula' }, { name: 'apan ola'}] });
 ```javascript
 // app.js
 import riot from 'riot';
-const app = riot.mount('my-app', { state })[0];
-app.update({ state });
+let todos = [{ name: 'doit' }, { name: 'profit'}]
+const app = riot.mount('my-app', { todos })[0];
+
+// later
+todos = todos.concat([{name: 'redo'}]);
+app.update({ todos });
 ```
 --
 
 ### App.tag
 
-* Basic layout of the app
+Basic layout of the app
 ```html
 <product-selection>
     <app-header/>
 
     <router/>
 
-    <app-menu/>
+    <other-awesome-component/>
 
     <toasts/>
-    <style scoped>
-        /* all general styles here */
-    </style>
 </product-selection>
 ```
 
 --
+
 ### Views
 
-* All views are stateless, except the router. It needs to keep track of previous view, to unmount it.
+All views are stateless, except the router. It needs to keep track of previous view, to unmount it.
+
 ```html
 <router>
-  <div name="content"></div>
+    <div name="content"></div>
 
-  <script type="text/babel">
+    <script type="text/babel">
     const mountSubView = () => {
       let currentTag, currentView;
       const viewName = opts.state.route.activeView;
@@ -139,7 +144,7 @@ app.update({ state });
     };
     this.on('update', () => mountSubView());
     // ...
-  </script>
+    </script>
 </router>
 ```
 
@@ -150,13 +155,28 @@ app.update({ state });
 --
 
 ### Store
-* One store to rule them all.
-* Emits event when state is updated.
+* One store to rule them all
+* Emits event when state is updated
+* Exposes getState for current state
+
+```javascript
+// app.js
+import riot from 'riot';
+import store from './store';
+
+// mount with current state, this will render the app
+// with whatever state the store currently holds
+const app = riot.mount('my-app', { state: store.getState() })[0];
+store.subscribe(state => {
+    app.opts.state = state;
+    app.update();
+});
+```
 
 --
 
 ### Actions
-* Functions to which you can subscribe. Emits events when they are run
+Functions to which you can subscribe. Emits events when they are run
 
 ```javascript
 import { createActions } from 'dedux';
@@ -191,30 +211,9 @@ function action() {
 
 ### Modifiers
 * Pure functions, returning an object.
-* Store sets up subscription on action, based on name.
+* Store sets up subscription on action, based on naming convention.
 * When the action is triggered, the store will use the result of the modifier to modify the state.
 * Grouped by a key, which will be a namespace in the state.
-
---
-
-### Reactions
-* When you need a side effect, an async call, or just to chain actions, just subscribe to the action and do whatever you please.
-* I usually group reactions, and set up subscriptions based on name.
-
---
-
-### Recap
-* View gets all data from state
-* View trigger actions
-* Actions modifies state, and triggers reactions
-* Reactions can trigger other actions
-* State gets updated by running corresponding modifiers
-* A state change is emitted by the store
-* View gets updated
-
---
-
-## Examples
 
 --
 
@@ -245,10 +244,9 @@ actions.toggleMenu(true);
 
 --
 
-### Some helpers
-* If we create actions from modifier and reaction keys
-* And we auto-subscribe to actions by reaction key
-* We can do something like this...
+### Reactions
+* When you need a side effect, an async call, or just to chain actions, just subscribe to the action and do whatever you please.
+* I usually group reactions, and set up subscriptions based on name.
 
 --
 
@@ -284,24 +282,58 @@ actions.getFoo(123);
 
 --
 
-### some examples...
+### Basic app flow
+* View gets all data from state
+* View trigger actions through event handlers
+* Actions trigger modifiers and reactions
+* Modifiers modify state
+* (Possible reactions are run and trigger other actions)
+* A state change is emitted by the store
+* View gets updated
+--
 
+### Initial state
+When creating a store we can set an initial state
+
+```javascript
+import actions from './actions';
+import modifiers from './modifiers';
+import { createStore } from 'dedux';
+const store = createStore(actions, modifiers, { todos: [{ name: 'doit' }]});
+```
+
+--
+
+### Initial state - continued
+Setting initial state can be used for several things, we could:
+* get state from localStorage, if we always save state we can now reload and keep our state
+* get state from the server, having the client take over on load
+* set some initial state for ui-tests, avoiding having to go through unnecessary steps
+
+--
+
+### Initial state - continued
+
+```javascript
+/* ...imports */
+
+// will hydrate state from localStorage
+// same technique would be used if we want to get some initial state from the server
+const initial = JSON.parse(localStorage.getItem('state'));
+const store = createStore(actions, modifiers, initial);
+const app = riot.mount('my-app', { state: store.getState() })[0];
+
+```
+
+--
+
+### some examples...
+* Menu toggle
+* Loading indicator
+* Routing
 * Filtering
-* Toggling
 * Debouncing updates
 
 --
 
-### Routing
-* Routing is a group of actions.
-
---
-
-### Css
-* Keep css with the tag. Then export and concat…
-
---
-
-### Questions
-* Returning a new array in a modifier, will re-evaluate each-binding. How to avoid re-init of underlying control?
-* Readability?
+## Thank you!

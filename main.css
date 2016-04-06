@@ -18,3 +18,7 @@ h1 + h2 {
 .progress-bar {
     height: 5px;
 }
+
+.slide-content {
+    height: 650px;
+}
