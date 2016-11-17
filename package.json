@@ -8,9 +8,6 @@
   },
   "author": "joel.sannerstedt@gmail.com",
   "license": "ISC",
-  "dependencies": {
-    "cleaver": "^0.8.2"
-  },
   "devDependencies": {
     "cleaver": "^0.8.2"
   }
