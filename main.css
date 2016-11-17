@@ -22,3 +22,15 @@ h1 + h2 {
 .slide-content {
     height: 650px;
 }
+
+p, ul {
+    margin: .5em 0;
+}
+
+ul {
+    padding-top: 0;
+}
+
+p + ul {
+    margin-top: -.5em;
+}
