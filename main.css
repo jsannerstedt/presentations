@@ -1,6 +1,7 @@
 pre {
     background: white;
     padding: 8px;
+    font-size: 24px;
 }
 
 h2 {
@@ -9,6 +10,18 @@ h2 {
 
 h1 + h2 {
     font-size: 100%;
+}
+
+p, ul {
+    margin: .5em 0;
+}
+
+ul {
+    padding-top: 0;
+}
+
+p + ul {
+    margin-top: -.5em;
 }
 
 .progress {
@@ -23,14 +36,12 @@ h1 + h2 {
     height: 650px;
 }
 
-p, ul {
-    margin: .5em 0;
+.slide.hidden {
+    display: block;
+    opacity: 0;
 }
 
-ul {
-    padding-top: 0;
-}
-
-p + ul {
-    margin-top: -.5em;
+.slide {
+    opacity: 1;
+    transition: opacity .3s ease;
 }
