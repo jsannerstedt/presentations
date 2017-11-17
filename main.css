@@ -39,9 +39,14 @@ p + ul {
 .slide.hidden {
     display: block;
     opacity: 0;
+    transform: translateX(-100%);
 }
 
 .slide {
     opacity: 1;
-    transition: opacity .3s ease;
+    transition: opacity 1s ease;
+}
+
+body {
+    background: #f7f7f7;
 }

@@ -396,13 +396,19 @@ p + ul {
 .slide.hidden {
     display: block;
     opacity: 0;
+    transform: translateX(-100%);
 }
 
 .slide {
     opacity: 1;
-    transition: opacity .3s ease;
+    transition: opacity 1s ease;
+}
+
+body {
+    background: #f7f7f7;
 }
   </style>
+    <script async src="http://localhost:35729/livereload.js"></script>
 </head>
 <body>
     <div class="progress">
@@ -428,6 +434,8 @@ p + ul {
 <li>es5 in 2009</li>
 <li>es6 === es2015</li>
 <li>superset of es5</li>
+<li>new version every year</li>
+<li><a href="https://github.com/tc39/ecma262">TC39</a></li>
 </ul>
 </section>
   </div>
@@ -451,8 +459,8 @@ p + ul {
 }
 <span class="hljs-built_in">console</span>.log(bar); <span class="hljs-comment">// ReferenceError</span></code></pre>
 <pre><code class="lang-javascript"><span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>; i &lt; b.length; i++) {
-    <span class="hljs-keyword">let</span> y = b[i]
-    …
+    <span class="hljs-keyword">let</span> y = b[i];
+    <span class="hljs-comment">// …</span>
 }</code></pre>
 </section>
   </div>
@@ -507,31 +515,40 @@ doStuff(); <span class="hljs-comment">// 'bar'</span></code></pre>
   </div>
   <div class="slide hidden" id="slide-12">
     <section class="slide-content"><h3 id="spread">Spread</h3>
-<pre><code class="lang-javascript"><span class="hljs-keyword">const</span> myComponent = props =&gt; 
-  <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">MyOtherComponent</span> {<span class="hljs-attr">...props</span>} <span class="hljs-attr">className</span>=<span class="hljs-string">'foobar'</span> /&gt;</span>;</span></code></pre>
+<pre><code class="lang-javascript"><span class="hljs-comment">//Object</span>
+<span class="hljs-keyword">const</span> myComponent = props =&gt; 
+  <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">MyOtherComponent</span> {<span class="hljs-attr">...props</span>} <span class="hljs-attr">className</span>=<span class="hljs-string">'foobar'</span> /&gt;</span>;</span>
+  <span class="hljs-comment">// &lt;MyOtherComponent </span>
+  <span class="hljs-comment">//  src={props.src} </span>
+  <span class="hljs-comment">//  title={props.title}' /&gt;;</span></code></pre>
+<pre><code class="lang-javascript"><span class="hljs-comment">//Array</span>
+<span class="hljs-keyword">const</span> arr = [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>];
+<span class="hljs-keyword">const</span> newArr = [...arr, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>];</code></pre>
 </section>
   </div>
   <div class="slide hidden" id="slide-13">
-    <section class="slide-content"><h3 id="rest">Rest</h3>
-<pre><code class="lang-javascript"><span class="hljs-keyword">const</span> doStuff = (foo, ...bar) =&gt; <span class="hljs-built_in">console</span>.log(bar);
-doStuff(<span class="hljs-string">'foo'</span>, <span class="hljs-string">'bar'</span>, <span class="hljs-string">'foobar'</span>); 
-<span class="hljs-comment">// ['bar', 'foobar']</span>
-
-<span class="hljs-keyword">const</span> doMore = ({foo, ...bar}) =&gt; <span class="hljs-built_in">console</span>.log(foo, bar);
-doStuff({foo:<span class="hljs-string">'foo'</span>, bar:<span class="hljs-string">'bar'</span>, foobar: <span class="hljs-string">'foobar'</span>}); 
-<span class="hljs-comment">// 'foo', {bar: 'bar', foobar: 'foobar'}</span></code></pre>
-<pre><code class="lang-javascript"><span class="hljs-keyword">const</span> myComponent = ({id, ...props}) =&gt; 
-  <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">MyOtherComponent</span> <span class="hljs-attr">stuff</span>=<span class="hljs-string">{getStuff(id)}</span>  {<span class="hljs-attr">...props</span>} /&gt;</span>;</span></code></pre>
+    <section class="slide-content"><h3 id="destructuring">Destructuring</h3>
+<pre><code class="lang-javascript"><span class="hljs-comment">//Array</span>
+<span class="hljs-keyword">const</span> [a, b] = [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>];
+<span class="hljs-built_in">console</span>.log(a,b); <span class="hljs-comment">// 1,2</span></code></pre>
+<pre><code class="lang-javascript"><span class="hljs-comment">//Object</span>
+<span class="hljs-keyword">const</span> {href} = <span class="hljs-built_in">window</span>.location;</code></pre>
+<pre><code class="lang-javascript"><span class="hljs-comment">//With default</span>
+<span class="hljs-keyword">const</span> {host=<span class="hljs-string">'localhost'</span>, search} = <span class="hljs-built_in">window</span>.location;</code></pre>
+<pre><code class="lang-javascript"><span class="hljs-comment">//Alias</span>
+<span class="hljs-keyword">const</span> doStuff = ({foo: bar}) =&gt; <span class="hljs-built_in">console</span>.log(bar);
+doStuff({foo: <span class="hljs-string">'foo'</span>});</code></pre>
 </section>
   </div>
   <div class="slide hidden" id="slide-14">
-    <section class="slide-content"><h3 id="destructuring">Destructuring</h3>
-<pre><code class="lang-javascript"><span class="hljs-keyword">const</span> [a, b] = [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>];
-<span class="hljs-built_in">console</span>.log(a,b); <span class="hljs-comment">// 1,2</span></code></pre>
-<pre><code class="lang-javascript"><span class="hljs-keyword">const</span> {href} = <span class="hljs-built_in">window</span>.location;</code></pre>
-<pre><code class="lang-javascript"><span class="hljs-keyword">const</span> {host=<span class="hljs-string">'localhost'</span>, search} = <span class="hljs-built_in">window</span>.location;</code></pre>
-<pre><code class="lang-javascript"><span class="hljs-keyword">const</span> doStuff = ({foo: bar}) =&gt; <span class="hljs-built_in">console</span>.log(bar);
-doStuff({foo: <span class="hljs-string">'foo'</span>});</code></pre>
+    <section class="slide-content"><h3 id="rest">Rest</h3>
+<pre><code class="lang-javascript"><span class="hljs-comment">//Arguments</span>
+<span class="hljs-keyword">const</span> doStuff = (foo, ...bar) =&gt; <span class="hljs-built_in">console</span>.log(bar);
+doStuff(<span class="hljs-string">'foo'</span>, <span class="hljs-string">'bar'</span>, <span class="hljs-string">'foobar'</span>); 
+<span class="hljs-comment">// ['bar', 'foobar']</span></code></pre>
+<pre><code class="lang-javascript"><span class="hljs-comment">//Object</span>
+<span class="hljs-keyword">const</span> myComponent = ({id, ...props}) =&gt; 
+  <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">OtherComponent</span> <span class="hljs-attr">stuff</span>=<span class="hljs-string">{getStuff(id)}</span>  {<span class="hljs-attr">...props</span>} /&gt;</span>;</span></code></pre>
 </section>
   </div>
   <div class="slide hidden" id="slide-15">
@@ -541,7 +558,7 @@ doStuff({foo: <span class="hljs-string">'foo'</span>});</code></pre>
   .then(json =&gt; <span class="hljs-built_in">console</span>.log(json));</code></pre>
 <pre><code class="lang-javascript"><span class="hljs-keyword">const</span> logAfterTimeout = msg =&gt;
   <span class="hljs-keyword">new</span> <span class="hljs-built_in">Promise</span>((resolve, reject)=&gt;
-    setTimeout(()=&gt; resolve(msg), <span class="hljs-number">500</span>));
+    setTimeout(() =&gt; resolve(msg), <span class="hljs-number">500</span>));
 
 logAfterTimeout(<span class="hljs-string">'hello'</span>)
   .then(msg =&gt; <span class="hljs-built_in">console</span>.log(msg));</code></pre>
@@ -574,7 +591,7 @@ logAfterTimeout(<span class="hljs-string">'hello'</span>)
   <div class="slide hidden" id="slide-19">
     <section class="slide-content"><h2 id="babel">Babel</h2>
 <ul>
-<li>Transpiler.</li>
+<li>Transpiler</li>
 <li>Can provide polyfills</li>
 <li>es next</li>
 </ul>
@@ -595,7 +612,7 @@ logAfterTimeout(<span class="hljs-string">'hello'</span>)
 </section>
   </div>
   <div class="slide hidden" id="slide-21">
-    <section class="slide-content"><h1 id="part-2-modules-and-architecture">Part 2 - modules and architecture</h1>
+    <section class="slide-content"><h1 id="part-2-modules">Part 2 - modules</h1>
 </section>
   </div>
   <div class="slide hidden  " id="slide-22">
@@ -627,12 +644,14 @@ logAfterTimeout(<span class="hljs-string">'hello'</span>)
 <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">h1</span>&gt;</span>default exports<span class="hljs-tag">&lt;/<span class="hljs-name">h1</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>;</span></code></pre>
+<pre><code class="lang-javascript"><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-number">3</span>+<span class="hljs-number">5</span>;</code></pre>
+<pre><code class="lang-javascript"><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MyClass</span></span>{};</code></pre>
 </section>
   </div>
   <div class="slide hidden" id="slide-25">
     <section class="slide-content"><h2 id="imports">Imports</h2>
 <ul>
-<li>Must be top level. No condiationls or dynamic imports.</li>
+<li>No condiationals or dynamic imports.</li>
 <li>imports are live, read only views of exports<pre><code class="lang-javascript"><span class="hljs-comment">// adder</span>
 <span class="hljs-keyword">let</span> val = <span class="hljs-number">0</span>;
 <span class="hljs-keyword">const</span> increase = () =&gt; val++;
@@ -721,7 +740,12 @@ _.uniqueId();</code></pre>
 </section>
   </div>
   <div class="slide hidden" id="slide-31">
-    <section class="slide-content"></section>
+    <section class="slide-content"><h2 id="read-more">Read more</h2>
+<ul>
+<li><a href="http://exploringjs.com/es6/index.html#toc_ch_modules">Exploring es6</a></li>
+<li><a href="https://github.com/getify/You-Dont-Know-JS/tree/master/es6%20%26%20beyond">YDKJS - es6 and beyond</a></li>
+</ul>
+</section>
   </div>
   <div class="slide hidden author-slide" id="slide-32">
     <section class="slide-content"><div class="author">

@@ -25,6 +25,8 @@ style: ../main.css
 - es5 in 2009
 - es6 === es2015
 - superset of es5
+- new version every year
+- [TC39](https://github.com/tc39/ecma262)
 
 --
 
@@ -52,8 +54,8 @@ console.log(bar); // ReferenceError
 
 ```javascript
 for (let i = 0; i < b.length; i++) {
-    let y = b[i]
-    …
+    let y = b[i];
+    // …
 }
 ```
 
@@ -130,44 +132,55 @@ doStuff(); // 'bar'
 
 ### Spread
 ```javascript
+//Object
 const myComponent = props => 
   <MyOtherComponent {...props} className='foobar' />;
+  // <MyOtherComponent 
+  //  src={props.src} 
+  //  title={props.title}' />;
+```
+```javascript
+//Array
+const arr = [1,2,3];
+const newArr = [...arr, 4, 5];
+```
+--
+
+### Destructuring
+```javascript
+//Array
+const [a, b] = [1,2,3];
+console.log(a,b); // 1,2
+```
+```javascript
+//Object
+const {href} = window.location;
+```
+```javascript
+//With default
+const {host='localhost', search} = window.location;
+```
+```javascript
+//Alias
+const doStuff = ({foo: bar}) => console.log(bar);
+doStuff({foo: 'foo'});
 ```
 --
 
 ### Rest
 
 ```javascript
+//Arguments
 const doStuff = (foo, ...bar) => console.log(bar);
 doStuff('foo', 'bar', 'foobar'); 
 // ['bar', 'foobar']
-
-const doMore = ({foo, ...bar}) => console.log(foo, bar);
-doStuff({foo:'foo', bar:'bar', foobar: 'foobar'}); 
-// 'foo', {bar: 'bar', foobar: 'foobar'}
 ```
 ```javascript
+//Object
 const myComponent = ({id, ...props}) => 
-  <MyOtherComponent stuff={getStuff(id)}  {...props} />;
+  <OtherComponent stuff={getStuff(id)}  {...props} />;
 ```
 
---
-
-### Destructuring
-```javascript
-const [a, b] = [1,2,3];
-console.log(a,b); // 1,2
-```
-```javascript
-const {href} = window.location;
-```
-```javascript
-const {host='localhost', search} = window.location;
-```
-```javascript
-const doStuff = ({foo: bar}) => console.log(bar);
-doStuff({foo: 'foo'});
-```
 --
 
 ### Promises
@@ -181,7 +194,7 @@ fetch('/myapi')
 ```javascript
 const logAfterTimeout = msg =>
   new Promise((resolve, reject)=>
-    setTimeout(()=> resolve(msg), 500));
+    setTimeout(() => resolve(msg), 500));
 
 logAfterTimeout('hello')
   .then(msg => console.log(msg));
@@ -219,7 +232,7 @@ export default () => _.uniqueId();
 
 ## Babel
 
-- Transpiler.
+- Transpiler
 - Can provide polyfills
 - es next
 --
@@ -242,7 +255,7 @@ export default () => _.uniqueId();
 
 --
 
-# Part 2 - modules and architecture
+# Part 2 - modules
 
 -- 
 
@@ -283,12 +296,17 @@ export default () =>
   <h1>default exports</h1>
 </div>;
 ```
-
+```javascript
+export default 3+5;
+```
+```javascript
+export default class MyClass{};
+```
 --
 
 ## Imports 
 
-- Must be top level. No condiationls or dynamic imports.
+- No condiationals or dynamic imports.
 - imports are live, read only views of exports
 ```javascript
 // adder
@@ -352,3 +370,8 @@ import {foo as f00} from './foo';
 - Webpack
 
 --
+
+## Read more
+
+- [Exploring es6](http://exploringjs.com/es6/index.html#toc_ch_modules)
+- [YDKJS - es6 and beyond](https://github.com/getify/You-Dont-Know-JS/tree/master/es6%20%26%20beyond)
