@@ -50,3 +50,8 @@ p + ul {
 body {
     background: #f7f7f7;
 }
+
+.name {
+    margin-top: 100px;
+    text-align: right;
+}

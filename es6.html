@@ -407,6 +407,11 @@ p + ul {
 body {
     background: #f7f7f7;
 }
+
+.name {
+    margin-top: 100px;
+    text-align: right;
+}
   </style>
     <script async src="http://localhost:35729/livereload.js"></script>
 </head>
@@ -416,19 +421,31 @@ body {
   </div>
 
   <div class="slide" id="slide-1">
-    <section class="slide-content"><h1 id="part-1-es6">Part 1 - es6</h1>
-</section>
+    <section class="slide-content"><h1 id="es6">es6</h1>
+<div class="name">
+// Joel Sannerstedt
+</div></section>
   </div>
   <div class="slide hidden" id="slide-2">
     <section class="slide-content"><h2 id="toc">TOC</h2>
+<p>part 1</p>
 <ul>
 <li>Background</li>
 <li>es6 highlights </li>
-<li>transpiling and bundling</li>
+<li>transpiling</li>
+</ul>
+<p>part 2</p>
+<ul>
+<li>modules</li>
+<li>bundling</li>
 </ul>
 </section>
   </div>
   <div class="slide hidden" id="slide-3">
+    <section class="slide-content"><h1 id="1-what-s-new">1. what&#39;s new</h1>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-4">
     <section class="slide-content"><h2 id="background">Background</h2>
 <ul>
 <li>es5 in 2009</li>
@@ -439,16 +456,12 @@ body {
 </ul>
 </section>
   </div>
-  <div class="slide hidden" id="slide-4">
-    <section class="slide-content"><h2 id="what-s-new-">What&#39;s new?</h2>
+  <div class="slide hidden" id="slide-5">
+    <section class="slide-content"><h2 id="highlights">Highlights</h2>
 <ul>
 <li>features</li>
 <li>syntactic sugar</li>
 </ul>
-</section>
-  </div>
-  <div class="slide hidden" id="slide-5">
-    <section class="slide-content"><h2 id="highlights">Highlights</h2>
 </section>
   </div>
   <div class="slide hidden" id="slide-6">
@@ -504,7 +517,7 @@ element.onClick(() =&gt; <span class="hljs-keyword">this</span>.doStuff());</cod
   <div class="slide hidden" id="slide-10">
     <section class="slide-content"><h3 id="string-templates">String templates</h3>
 <pre><code class="lang-javascript"><span class="hljs-keyword">const</span> getUrl = params =&gt; 
-  <span class="hljs-string">`<span class="hljs-subst">${location.href}</span>?foo=<span class="hljs-subst">${params.bar}</span>}`</span>);</code></pre>
+  <span class="hljs-string">`<span class="hljs-subst">${location.href}</span>?foo=<span class="hljs-subst">${params.bar}</span>}`</span>;</code></pre>
 </section>
   </div>
   <div class="slide hidden" id="slide-11">
@@ -612,7 +625,7 @@ logAfterTimeout(<span class="hljs-string">'hello'</span>)
 </section>
   </div>
   <div class="slide hidden" id="slide-21">
-    <section class="slide-content"><h1 id="part-2-modules">Part 2 - modules</h1>
+    <section class="slide-content"><h1 id="2-modules">2. modules</h1>
 </section>
   </div>
   <div class="slide hidden  " id="slide-22">
@@ -627,6 +640,15 @@ logAfterTimeout(<span class="hljs-string">'hello'</span>)
 </section>
   </div>
   <div class="slide hidden" id="slide-23">
+    <section class="slide-content"><h3 id="in-the-old-days-">In the old days...</h3>
+<ul>
+<li>module pattern</li>
+<li>AMD</li>
+<li>commonJS</li>
+</ul>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-24">
     <section class="slide-content"><h3 id="named-exports">Named exports</h3>
 <p>several per module</p>
 <pre><code class="lang-javascript"><span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> foo = <span class="hljs-number">1</span>;
@@ -637,7 +659,7 @@ logAfterTimeout(<span class="hljs-string">'hello'</span>)
 <span class="hljs-keyword">export</span> {foo, bar};</code></pre>
 </section>
   </div>
-  <div class="slide hidden" id="slide-24">
+  <div class="slide hidden" id="slide-25">
     <section class="slide-content"><h3 id="default-exports">Default exports</h3>
 <p>one per module</p>
 <pre><code class="lang-javascript"><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> () =&gt; 
@@ -648,7 +670,7 @@ logAfterTimeout(<span class="hljs-string">'hello'</span>)
 <pre><code class="lang-javascript"><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MyClass</span></span>{};</code></pre>
 </section>
   </div>
-  <div class="slide hidden" id="slide-25">
+  <div class="slide hidden" id="slide-26">
     <section class="slide-content"><h2 id="imports">Imports</h2>
 <ul>
 <li>No condiationals or dynamic imports.</li>
@@ -664,24 +686,24 @@ increase();
 </ul>
 </section>
   </div>
-  <div class="slide hidden" id="slide-26">
+  <div class="slide hidden" id="slide-27">
     <section class="slide-content"><h3 id="default-imports">Default imports</h3>
 <pre><code class="lang-javascript"><span class="hljs-keyword">import</span> foo <span class="hljs-keyword">from</span> <span class="hljs-string">'./bar'</span>;
 <span class="hljs-keyword">import</span> * <span class="hljs-keyword">as</span> _ <span class="hljs-keyword">from</span> <span class="hljs-string">'lodash'</span>;
 _.uniqueId();</code></pre>
 </section>
   </div>
-  <div class="slide hidden" id="slide-27">
+  <div class="slide hidden" id="slide-28">
     <section class="slide-content"><h3 id="named-imports">Named imports</h3>
 <pre><code class="lang-javascript"><span class="hljs-keyword">import</span> {foo, bar} <span class="hljs-keyword">from</span> <span class="hljs-string">'./foobar'</span>;
 <span class="hljs-keyword">import</span> {foo <span class="hljs-keyword">as</span> f00} <span class="hljs-keyword">from</span> <span class="hljs-string">'./foo'</span>;</code></pre>
 </section>
   </div>
-  <div class="slide hidden" id="slide-28">
+  <div class="slide hidden" id="slide-29">
     <section class="slide-content"><h2 id="bundling">Bundling</h2>
 <ul>
 <li><ul>
-<li>fewer files === less requests</li>
+<li>fewer files === fewer requests</li>
 </ul>
 </li>
 <li><ul>
@@ -703,7 +725,7 @@ _.uniqueId();</code></pre>
 </ul>
 </section>
   </div>
-  <div class="slide hidden" id="slide-29">
+  <div class="slide hidden" id="slide-30">
     <section class="slide-content"><h2 id="http2-and-modules">HTTP2 and modules</h2>
 <ul>
 <li><ul>
@@ -729,7 +751,7 @@ _.uniqueId();</code></pre>
 </ul>
 </section>
   </div>
-  <div class="slide hidden" id="slide-30">
+  <div class="slide hidden" id="slide-31">
     <section class="slide-content"><h2 id="bundlers">Bundlers</h2>
 <ul>
 <li>cat</li>
@@ -739,7 +761,7 @@ _.uniqueId();</code></pre>
 </ul>
 </section>
   </div>
-  <div class="slide hidden" id="slide-31">
+  <div class="slide hidden" id="slide-32">
     <section class="slide-content"><h2 id="read-more">Read more</h2>
 <ul>
 <li><a href="http://exploringjs.com/es6/index.html#toc_ch_modules">Exploring es6</a></li>
@@ -747,7 +769,7 @@ _.uniqueId();</code></pre>
 </ul>
 </section>
   </div>
-  <div class="slide hidden author-slide" id="slide-32">
+  <div class="slide hidden author-slide" id="slide-33">
     <section class="slide-content"><div class="author">
   <h1 class="name">Joel Sannerstedt</h1>
     <h3 class="url">

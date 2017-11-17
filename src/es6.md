@@ -8,15 +8,28 @@ style: ../main.css
 
 --
 
-# Part 1 - es6
+# es6
+
+
+<div class="name">
+// Joel Sannerstedt
+</div>
 
 --
 
 ## TOC
-
+part 1
 - Background
 - es6 highlights 
-- transpiling and bundling
+- transpiling
+
+part 2
+- modules
+- bundling
+
+--
+
+# 1. what's new
 
 --
 
@@ -30,14 +43,10 @@ style: ../main.css
 
 --
 
-## What's new?
+## Highlights
 
 - features
 - syntactic sugar 
-
---
-
-## Highlights
 
 --
 
@@ -81,7 +90,6 @@ element.onClick(function() {_this.doStuff() });
 
 //es6
 element.onClick(() => this.doStuff());
-
 ```
 
 --
@@ -116,7 +124,7 @@ console.log({[foo]: 'bar'});
 
 ```javascript
 const getUrl = params => 
-  `${location.href}?foo=${params.bar}}`);
+  `${location.href}?foo=${params.bar}}`;
 ```
 
 --
@@ -255,7 +263,7 @@ export default () => _.uniqueId();
 
 --
 
-# Part 2 - modules
+# 2. modules
 
 -- 
 
@@ -265,6 +273,14 @@ export default () => _.uniqueId();
 > - **Dependency References**: how to refer to other units of code.
 
 // http://requirejs.org/docs/whyamd.html
+
+--
+
+### In the old days...
+
+- module pattern
+- AMD
+- commonJS
 
 --
 
@@ -344,7 +360,7 @@ import {foo as f00} from './foo';
 
 ## Bundling
 
-- + fewer files === less requests
+- + fewer files === fewer requests
 - + Gzip is more efficient on larger files
 - + tree shaking
 - - compile time
