@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        @media (min-width: 800px) {
+            .responsive {
+                width: 50%;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="images.css">
+</head>
+<body>
+<h1>srcset</h1>
+
+<img class="responsive"
+     alt="image"
+     srcset="what-we-do.jpg 2500w, what-we-do-small.jpg 480w"
+     sizes="(min-width: 800px) 50vw, 100vw"/>
+</body>
+</html>
